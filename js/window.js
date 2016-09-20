@@ -11,7 +11,8 @@ define(['jquery'], function($){
 			title: '系统消息',
 			content: '',
 			handler: null,
-			hasCloseBtn: false
+			hasCloseBtn: false,
+			skinClassName: null
 		}
 	}
 	Window.prototype = {
@@ -41,6 +42,9 @@ define(['jquery'], function($){
 				closeBtn.click(function(){
 					boundingBox.remove()
 				})
+			}
+			if(cfg.skinClassName){
+				boundingBox.addClass(cfg.skinClassName)
 			}
 		},
 		confirm: function(){},

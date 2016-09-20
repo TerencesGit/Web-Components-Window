@@ -64,3 +64,15 @@ body {
 .window_closeBtn:hover{
     background: #f60
 }
+/* blue skin*/
+.blue_window .window-header, 
+.blue_window .btn{
+    background: #008CDC
+}
+.blue_window .window_closeBtn:hover{
+    background: #444
+}
+.blue_window .btn {
+    background: #008CDC;
+    color: #fff;
+}
