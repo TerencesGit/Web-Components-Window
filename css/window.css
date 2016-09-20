@@ -1,4 +1,9 @@
-
+html {
+    box-sizing: border-box;
+}
+* {
+    box-sizing: inherit;
+}
 body {
     margin: 0;
     padding: 0;
@@ -7,10 +12,19 @@ body {
 .window_boundingBox {
     position: fixed;
     border: 1px solid #ccc;
-    padding: 30px;
     font-size: 22px;
     background: #fff;
     box-shadow: 1px 0 5px #ccc
+}
+.window-header{
+    height: 35px;
+    line-height: 1.5;
+    color: #fff;
+    text-indent: 2em;
+    background: #444;
+}
+.window-body{
+    padding: 10px;
 }
 .window_boundingBox .btn{
 	position: absolute;

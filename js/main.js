@@ -5,12 +5,15 @@ require.config({
 })
 define(['jquery','Window'], function($,w){
 	$('.btn').click(function(){
-		new w.Window().alert('Welcome!',function(){
-			alert('you click the button!')
-		},{
-			width: 300,
-			height: 150,
-			y: 100
+		new w.Window().alert({
+			title: '提示',
+			content: 'Welcome!',
+			handler: function(){
+				// alert('you click the button!')
+			},
+			width: 400,
+			height: 250,
+			y: 200
 		});
 	})
 })

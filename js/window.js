@@ -4,29 +4,35 @@ require.config({
 	}
 })
 define(['jquery'], function($){
-	function Window(){}
+	function Window(){
+		this.config = {
+			width: 500,
+			height: 300,
+			title: '系统消息',
+			content: '',
+			handler: null
+		}
+	}
 	Window.prototype = {
-		alert: function(content, handler, cfg){
-			var boundingBox = $('<div class="window_boundingBox"></div>')
+		alert: function(config){
+			var cfg = $.extend(this.config, config);
+			var boundingBox = $(
+				'<div class="window_boundingBox">'+
+				'<div class="window-header">'+cfg.title+'</div>'+
+				'<div class="window-body">'+cfg.content+'</div>'+
+				'<div class="window-footer"><button class="btn">确定</button></div>'+
+				'</div>')
 			boundingBox.appendTo('body');
-			boundingBox.html(content)
-			var btn = $('<button class="btn">确定</button>');
-			btn.appendTo(boundingBox);
+			var btn = boundingBox.find('.window-footer button')
 			btn.click(function(){
-				handler && handler()
+				cfg.handler && cfg.handler()
 				boundingBox.remove()
 			})
-			this.cfg = {
-				width: 500,
-				height: 300
-			}
-			$.extend(this.cfg, cfg)
-			console.log((window.innerHeight ))
 			boundingBox.css({
-				width: this.cfg.width,
-				height: this.cfg.height,
-				left: this.cfg.x || (window.innerWidth - this.cfg.width)/2,
-				top: this.cfg.y || (window.innerHeight - this.cfg.height)/2
+				width: cfg.width,
+				height: cfg.height,
+				left: cfg.x || (window.innerWidth - cfg.width)/2,
+				top: cfg.y || (window.innerHeight - cfg.height)/2
 			})
 		},
 		confirm: function(){},
