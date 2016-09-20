@@ -1,9 +1,10 @@
 require.config({
 	paths: {
-		jquery: 'jquery/jquery.min'
+		jquery: 'jquery/jquery.min',
+		jqueryUI: 'https://code.jquery.com/ui/1.10.3/jquery-ui.min'
 	}
 })
-define(['jquery'], function($){
+define(['jquery','jqueryUI'], function($,$UI){
 	function Window(){
 		this.config = {
 			width: 500,
@@ -14,7 +15,9 @@ define(['jquery'], function($){
 			handler: null,
 			hasCloseBtn: false,
 			skinClassName: null,
-			hasMask: true
+			hasMask: true,
+			isDraggable: true,
+			dragHandle: null
 		}
 	}
 	Window.prototype = {
@@ -53,6 +56,17 @@ define(['jquery'], function($){
 			}
 			if(cfg.hasMask){
 				mask.appendTo('body')
+			}
+			if(cfg.isDraggable){
+				if(cfg.dragHandle){
+					boundingBox.draggable({
+						containment: "parent",
+						handle: cfg.dragHandle
+					})
+				}else{
+					boundingBox.draggable({containment: "parent"})
+				}
+				
 			}
 		},
 		confirm: function(){},
