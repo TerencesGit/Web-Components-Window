@@ -10,9 +10,11 @@ define(['jquery'], function($){
 			height: 300,
 			title: '系统消息',
 			content: '',
+			alertBtnText: '确定',
 			handler: null,
 			hasCloseBtn: false,
-			skinClassName: null
+			skinClassName: null,
+			hasMask: true
 		}
 	}
 	Window.prototype = {
@@ -22,13 +24,15 @@ define(['jquery'], function($){
 				'<div class="window_boundingBox">'+
 				'<div class="window-header">'+cfg.title+'</div>'+
 				'<div class="window-body">'+cfg.content+'</div>'+
-				'<div class="window-footer"><button class="btn">确定</button></div>'+
+				'<div class="window-footer"><button class="btn">'+cfg.alertBtnText+'</button></div>'+
 				'</div>')
+			var mask = $('<div class="window_mask"></div>');
 			boundingBox.appendTo('body');
 			var btn = boundingBox.find('.window-footer button')
 			btn.click(function(){
 				cfg.handler && cfg.handler()
 				boundingBox.remove()
+				mask && mask.remove()
 			})
 			boundingBox.css({
 				width: cfg.width,
@@ -41,10 +45,14 @@ define(['jquery'], function($){
 				closeBtn.appendTo(boundingBox)
 				closeBtn.click(function(){
 					boundingBox.remove()
+					mask && mask.remove()
 				})
 			}
 			if(cfg.skinClassName){
 				boundingBox.addClass(cfg.skinClassName)
+			}
+			if(cfg.hasMask){
+				mask.appendTo('body')
 			}
 		},
 		confirm: function(){},

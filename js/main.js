@@ -14,8 +14,10 @@ define(['jquery','Window'], function($,w){
 			width: 400,
 			height: 250,
 			y: 200,
+			alertBtnText: 'Confirm',
 			hasCloseBtn: true,
-			skinClassName: 'blue_window'
+			// skinClassName: 'blue_window',
+			// hasMask: false
 		});
 	})
 })

@@ -6,15 +6,22 @@ html {
 }
 body {
     margin: 0;
-    padding: 0;
-    background: #f0f0f0
+    padding: 0
+}
+.window_mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.5)
 }
 .window_boundingBox {
-    position: fixed;
-    border: 1px solid #ccc;
+    position: absolute;
+    z-index: 2;
     font-size: 22px;
     background: #fff;
-    box-shadow: 1px 0 5px #ccc
+    box-shadow: 1px 1px 5px #333
 }
 .window-header{
     height: 35px;
