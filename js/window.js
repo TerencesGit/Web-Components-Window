@@ -10,7 +10,8 @@ define(['jquery'], function($){
 			height: 300,
 			title: '系统消息',
 			content: '',
-			handler: null
+			handler: null,
+			hasCloseBtn: false
 		}
 	}
 	Window.prototype = {
@@ -34,6 +35,13 @@ define(['jquery'], function($){
 				left: cfg.x || (window.innerWidth - cfg.width)/2,
 				top: cfg.y || (window.innerHeight - cfg.height)/2
 			})
+			if(cfg.hasCloseBtn){
+				var closeBtn = $('<span class="window_closeBtn">&times;</span>')
+				closeBtn.appendTo(boundingBox)
+				closeBtn.click(function(){
+					boundingBox.remove()
+				})
+			}
 		},
 		confirm: function(){},
 		prompt: function(){}

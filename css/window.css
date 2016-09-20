@@ -20,7 +20,7 @@ body {
     height: 35px;
     line-height: 1.5;
     color: #fff;
-    text-indent: 2em;
+    text-indent: 1em;
     background: #444;
 }
 .window-body{
@@ -52,4 +52,15 @@ body {
     color: #333;
     background-color: #fff;
     border-color: #ccc;
+}
+.window_closeBtn {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    padding: 5px 10px;
+    color: #fff;
+    cursor: pointer;
+}
+.window_closeBtn:hover{
+    background: #f60
 }

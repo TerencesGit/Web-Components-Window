@@ -13,7 +13,8 @@ define(['jquery','Window'], function($,w){
 			},
 			width: 400,
 			height: 250,
-			y: 200
+			y: 200,
+			hasCloseBtn: true
 		});
 	})
 })
