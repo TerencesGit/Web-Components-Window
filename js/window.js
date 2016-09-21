@@ -4,7 +4,7 @@ require.config({
 		jqueryUI: 'https://code.jquery.com/ui/1.10.3/jquery-ui.min'
 	}
 })
-define(['jquery','jqueryUI'], function($,$UI){
+define(['widget','jquery','jqueryUI'], function(widget,$,$UI){
 	function Window(){
 		this.config = {
 			width: 500,
@@ -20,10 +20,11 @@ define(['jquery','jqueryUI'], function($,$UI){
 			isDraggable: true,
 			dragHandle: null
 		};
-		this.handlers = {};
+		// this.handlers = {};
 	}
-	Window.prototype = {
+	Window.prototype = $.extend({},new widget.Widget(),{
 		alert: function(config){
+			console.log(new widget.Widget());
 			var cfg = $.extend(this.config, config);
 			var boundingBox = $(
 				'<div class="window_boundingBox">'+
@@ -83,24 +84,24 @@ define(['jquery','jqueryUI'], function($,$UI){
 			return this;
 		},
 		confirm: function(){},
-		prompt: function(){},
-		on: function(type,handler){
-			if(typeof this.handlers[type] == 'undefined'){
-				this.handlers[type] = []
-			}else{
-				this.handlers[type].push(handler)
-			}
-			return this
-		},
-		fire: function(type,data){
-			if(this.handlers[type] instanceof Array){
-				var handlers = this.handlers[type];
-				for(var i = 0,len= handlers.length;i<len;i++){
-					handlers[i](data)
-				}
-			}
-		}
-	}
+		prompt: function(){}
+		// on: function(type,handler){
+		// 	if(typeof this.handlers[type] == 'undefined'){
+		// 		this.handlers[type] = []
+		// 	}else{
+		// 		this.handlers[type].push(handler)
+		// 	}
+		// 	return this
+		// },
+		// fire: function(type,data){
+		// 	if(this.handlers[type] instanceof Array){
+		// 		var handlers = this.handlers[type];
+		// 		for(var i = 0,len= handlers.length;i<len;i++){
+		// 			handlers[i](data)
+		// 		}
+		// 	}
+		// }
+	})
 	return {
 		Window: Window
 	}
