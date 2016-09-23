@@ -6,7 +6,7 @@ html {
 }
 body {
     margin: 0;
-    padding: 0
+    padding: 20px
 }
 .window_mask {
     position: fixed;
@@ -31,14 +31,17 @@ body {
     background: #444;
 }
 .window-body{
-    padding: 10px;
+    padding: 20px 
 }
-.window_boundingBox .btn{
-	position: absolute;
-	bottom: 10px;
-	left: 50%;
-	margin-left: -40px;
-	width: 80px;
+.window-footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    text-align: center
+}
+.window-footer button{
+    margin: 0 10px
 }
 .btn {
     display: inline-block;
@@ -51,7 +54,6 @@ body {
     white-space: nowrap;
     vertical-align: middle;
     cursor: pointer;
-    background-image: none;
     border: 1px solid transparent;
     border-radius: 4px;
 }

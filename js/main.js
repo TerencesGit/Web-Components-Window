@@ -4,9 +4,8 @@ require.config({
 	}
 })
 define(['jquery','Window'], function($,w){
-	$('.btn').click(function(){
-		var win = new w.Window();
-		win.alert({
+	$('.btn-alert').click(function(){
+		new w.Window().alert({
 			title: '提示',
 			content: 'Welcome!',
 			handlerAlertBtn: function(){
@@ -30,5 +29,20 @@ define(['jquery','Window'], function($,w){
 		}).on('close', function(){
 			alert('you click the close button again!')
 		})
+	})
+	$('.btn-confirm').click(function(){
+		new w.Window().confirm({
+			content: '要确认删除这个文件吗？',
+			confirmBtnText: '是',
+			cancelBtnText: '否',
+			handlerConfirmBtn: function(){
+				alert('you click confirm button')
+			},
+			handlerCancelBtn: function(){}
+		}).on('confirm', function(){
+			alert('you click the confirm button again!')
+		}).on('cancel', function(){
+			alert('you click the cancel button!')
+		}) 
 	})
 })
