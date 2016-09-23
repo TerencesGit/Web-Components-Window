@@ -1,6 +1,11 @@
-define(function(){
+require.config({
+	paths: {
+		jquery: 'jquery/jquery.min'
+	}
+})
+define(['jquery'], function($){
 	function Widget(){
-		this.handlers = {}
+		this.boundingBox = null;
 	}
 	Widget.prototype = {
 		on: function(type,handler){
@@ -18,6 +23,22 @@ define(function(){
 					handlers[i](data);
 				}
 			}
+		},
+		renderUI: function(){},
+		bindUI: function(){},
+		syncUI: function(){},
+		render: function(container){
+			this.renderUI()
+			this.handlers = {}
+			this.bindUI()
+			this.syncUI()
+			$(container || document.body).append(this.boundingBox)
+		},
+		destructor: function(){},
+		destroy: function(){
+			this.destructor()
+			this.boundingBox.off()
+			this.boundingBox.remove()
 		}
 	}
 	return {

@@ -20,7 +20,7 @@ define(['jquery','Window'], function($,w){
 			handlerCloseBtn: function(){
 				alert('you click the close button!')
 			},
-			// skinClassName: 'blue_window',
+			 skinClassName: 'blue_window',
 			// hasMask: false,
 			dragHandle: '.window-header'
 		}).on('alert', function(){

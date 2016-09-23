@@ -6,7 +6,7 @@ require.config({
 })
 define(['widget','jquery','jqueryUI'], function(widget,$,$UI){
 	function Window(){
-		this.config = {
+		this.cfg = {
 			width: 500,
 			height: 300,
 			title: '系统消息',
@@ -20,87 +20,73 @@ define(['widget','jquery','jqueryUI'], function(widget,$,$UI){
 			isDraggable: true,
 			dragHandle: null
 		};
-		// this.handlers = {};
 	}
 	Window.prototype = $.extend({},new widget.Widget(),{
-		alert: function(config){
-			console.log(new widget.Widget());
-			var cfg = $.extend(this.config, config);
-			var boundingBox = $(
+		renderUI: function(){
+			this.boundingBox = $(
 				'<div class="window_boundingBox">'+
-				'<div class="window-header">'+cfg.title+'</div>'+
-				'<div class="window-body">'+cfg.content+'</div>'+
-				'<div class="window-footer"><button class="btn">'+cfg.alertBtnText+'</button></div>'+
+				'<div class="window-header">'+this.cfg.title+'</div>'+
+				'<div class="window-body">'+this.cfg.content+'</div>'+
+				'<div class="window-footer"><button class="btn window_alertBtn">'+this.cfg.alertBtnText+'</button></div>'+
 				'</div>')
-			that = this
-			var mask = $('<div class="window_mask"></div>');
-			boundingBox.appendTo('body');
-			boundingBox.css({
-				width: cfg.width,
-				height: cfg.height,
-				left: cfg.x || (window.innerWidth - cfg.width)/2,
-				top: cfg.y || (window.innerHeight - cfg.height)/2
+			if(this.cfg.hasMask){
+				this._mask = $('<div class="window_mask"></div>');
+				this._mask.appendTo('body')
+			}
+			if(this.cfg.hasCloseBtn){
+				this.boundingBox.append('<span class="window_closeBtn">&times;</span>')
+			}
+			this.boundingBox.appendTo('body')
+		},
+		bindUI: function(){
+			var that = this;
+			this.boundingBox.delegate('.window_alertBtn','click',function(){
+				that.cfg.handlerAlertBtn && that.cfg.handlerAlertBtn()
+				that.fire('alert');
+				that.destroy();
+			}).delegate('.window_closeBtn','click',function(){
+				that.cfg.handlerCloseBtn && that.cfg.handlerCloseBtn();
+				that.fire('close');
+				that.destroy()
 			})
-			var btn = boundingBox.find('.window-footer button')
-			btn.click(function(){
-				cfg.handlerAlertBtn && cfg.handlerAlertBtn()
-				that.fire('alert')
-				boundingBox.remove()
-				mask && mask.remove()
+			if(this.cfg.handlerAlertBtn){
+				this.on('alert', this.cfg.handlerAlertBtn)
+			}
+			if(this.cfg.handlerCloseBtn){
+				this.on('close', this.cfg.handlerCloseBtn)
+			}
+		},
+		syncUI: function(){
+			this.boundingBox.css({
+				width: this.cfg.width,
+				height: this.cfg.height,
+				left: this.cfg.x || (window.innerWidth - this.cfg.width)/2,
+				top: this.cfg.y || (window.innerHeight - this.cfg.height)/2
 			})
-			if(cfg.handlerAlertBtn){
-				this.on('alert', cfg.handlerAlertBtn)
+			if(this.cfg.skinClassName){
+				this.boundingBox.addClass(this.cfg.skinClassName)
 			}
-			if(cfg.hasCloseBtn){
-				var closeBtn = $('<span class="window_closeBtn">&times;</span>')
-				closeBtn.appendTo(boundingBox)
-				closeBtn.click(function(){
-					cfg.handlerCloseBtn && cfg.handlerCloseBtn()
-					that.fire('close')
-					boundingBox.remove()
-					mask && mask.remove()
-				})
-			}
-			if(cfg.handlerCloseBtn){
-				this.on('close', cfg.handlerCloseBtn)
-			}
-			if(cfg.skinClassName){
-				boundingBox.addClass(cfg.skinClassName)
-			}
-			if(cfg.hasMask){
-				mask.appendTo('body')
-			}
-			if(cfg.isDraggable){
-				if(cfg.dragHandle){
-					boundingBox.draggable({
+			if(this.cfg.isDraggable){
+				if(this.cfg.dragHandle){
+					this.boundingBox.draggable({
 						containment: "parent",
-						handle: cfg.dragHandle
+						handle: this.cfg.dragHandle
 					})
 				}else{
-					boundingBox.draggable({containment: "parent"})
+					this.boundingBox.draggable({containment: "parent"})
 				}
-				
 			}
-			return this;
+		},
+		destructor: function(){
+			this._mask && this._mask.remove()
+		},
+		alert: function(cfg){
+			$.extend(this.cfg,cfg)
+			this.render()
+			return this
 		},
 		confirm: function(){},
 		prompt: function(){}
-		// on: function(type,handler){
-		// 	if(typeof this.handlers[type] == 'undefined'){
-		// 		this.handlers[type] = []
-		// 	}else{
-		// 		this.handlers[type].push(handler)
-		// 	}
-		// 	return this
-		// },
-		// fire: function(type,data){
-		// 	if(this.handlers[type] instanceof Array){
-		// 		var handlers = this.handlers[type];
-		// 		for(var i = 0,len= handlers.length;i<len;i++){
-		// 			handlers[i](data)
-		// 		}
-		// 	}
-		// }
 	})
 	return {
 		Window: Window
