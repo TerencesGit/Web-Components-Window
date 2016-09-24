@@ -1,6 +1,8 @@
 require.config({
 	paths: {
-		jquery: 'jquery/jquery.min'
+		jquery: 'jquery/jquery.min',
+		//jqueryUI: 'jquery-ui/jquery-ui.min'
+		jqueryUI: 'https://code.jquery.com/ui/1.10.3/jquery-ui.min'
 	}
 })
 define(['jquery','Window'], function($,w){
@@ -35,7 +37,7 @@ define(['jquery','Window'], function($,w){
 			content: '要确认删除这个文件吗？',
 			confirmBtnText: '是',
 			cancelBtnText: '否',
-			handlerConfirmBtn: function(){
+			handlerConfirmBtn: function(input){
 				alert('you click confirm button')
 			},
 			handlerCancelBtn: function(){}
@@ -44,5 +46,23 @@ define(['jquery','Window'], function($,w){
 		}).on('cancel', function(){
 			alert('you click the cancel button!')
 		}) 
+	})
+	$('.btn-prompt').click(function(){
+		new w.Window().prompt({
+			width: 300,
+			height: 200,
+			promptBtnText: '提交',
+			//isPromptInputPassword: true,
+			handlerPromptBtn: function(inputText){
+				alert('你输入的内容是' + inputText)
+			},
+			handlerCancelBtn: function(){
+				alert('you click the cancel button!')
+			}
+		}).on('prompt',function(inputText){
+			alert('你输入的内容是' + inputText)
+		}).on('cancel',function(){
+			alert('you click the cancel button!')
+		})
 	})
 })

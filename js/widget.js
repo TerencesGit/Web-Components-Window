@@ -1,8 +1,3 @@
-require.config({
-	paths: {
-		jquery: 'jquery/jquery.min'
-	}
-})
 define(['jquery'], function($){
 	function Widget(){
 		this.boundingBox = null;

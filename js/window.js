@@ -1,9 +1,4 @@
-require.config({
-	paths: {
-		jquery: 'jquery/jquery.min',
-		jqueryUI: 'https://code.jquery.com/ui/1.10.3/jquery-ui.min'
-	}
-})
+
 define(['widget','jquery','jqueryUI'], function(widget,$,$UI){
 	function Window(){
 		this.cfg = {
@@ -14,6 +9,11 @@ define(['widget','jquery','jqueryUI'], function(widget,$,$UI){
 			alertBtnText: '确定',
 			confirmBtnText: '确定',
 			cancelBtnText: '取消',
+			promptBtnText: '确定',
+			isPromptInputPassword: false,
+			promptInputText: '请输入内容',
+			maxlengthPromptInput: 10,
+			handlerPromptBtn: null,
 			handlerAlertBtn: null,
 			handlerCloseBtn: null,
 			handlerConfirmBtn: null,
@@ -33,8 +33,17 @@ define(['widget','jquery','jqueryUI'], function(widget,$,$UI){
 					footContent = '<button class="btn window_alertBtn">'+this.cfg.alertBtnText+'</button>';
 					break;
 				case 'confirm':
-				footContent = '<button class="btn window_confirmBtn">'+this.cfg.confirmBtnText+'</button>'+
-				'<button class="btn window_cancelBtn">'+this.cfg.cancelBtnText+'</button>'
+					footContent = '<button class="btn window_confirmBtn">'+this.cfg.confirmBtnText+'</button>'+
+					'<button class="btn window_cancelBtn">'+this.cfg.cancelBtnText+'</button>'
+					break;
+				case 'prompt':
+					this.cfg.content += '<p class="window_promptInputWrapper">'+
+					'<input type="'+(this.cfg.isPromptInputPassword ? "password" : "text")+'"'+
+					'placeholder="'+this.cfg.promptInputText+'"maxlength="'+this.cfg.maxlengthPromptInput+''+
+					'"class="window_promptInput"></p>';
+					footContent = '<button class="btn window_promptBtn">'+this.cfg.promptBtnText+'</button>'+
+					'<button class="btn window_cancelBtn">'+this.cfg.cancelBtnText+'</buttom>';
+					break;
 			}
 			this.boundingBox = $(
 				'<div class="window_boundingBox">'+
@@ -42,6 +51,7 @@ define(['widget','jquery','jqueryUI'], function(widget,$,$UI){
 				'<div class="window-body">'+this.cfg.content+'</div>'+
 				'<div class="window-footer">'+footContent+'</div>'+
 				'</div>')
+			this._promptInput = this.boundingBox.find('.window_promptInput')
 			if(this.cfg.hasMask){
 				this._mask = $('<div class="window_mask"></div>');
 				this._mask.appendTo('body')
@@ -54,19 +64,19 @@ define(['widget','jquery','jqueryUI'], function(widget,$,$UI){
 		bindUI: function(){
 			var that = this;
 			this.boundingBox.delegate('.window_alertBtn','click',function(){
-				that.cfg.handlerAlertBtn && that.cfg.handlerAlertBtn()
 				that.fire('alert');
 				that.destroy();
 			}).delegate('.window_closeBtn','click',function(){
-				that.cfg.handlerCloseBtn && that.cfg.handlerCloseBtn();
 				that.fire('close');
 				that.destroy()
 			}).delegate('.window_confirmBtn','click',function(){
-				that.cfg.handlerConfirmBtn && that.cfg.handlerConfirmBtn()
 				that.fire('confirm');
 				that.destroy()
 			}).delegate('.window_cancelBtn','click',function(){
 				that.fire('cancel');
+				that.destroy()
+			}).delegate('.window_promptBtn','click',function(){
+				that.fire("prompt", that._promptInput.val());
 				that.destroy()
 			})
 			if(this.cfg.handlerAlertBtn){
@@ -80,6 +90,9 @@ define(['widget','jquery','jqueryUI'], function(widget,$,$UI){
 			}
 			if(this.cfg.handlerCancelBtn){
 				this.on('cancel', this.cfg.handlerCancelBtn)
+			}
+			if(this.cfg.handlerPromptBtn){
+				this.on("prompt", this.cfg.handlerPromptBtn)
 			}
 		},
 		syncUI: function(){
@@ -99,7 +112,7 @@ define(['widget','jquery','jqueryUI'], function(widget,$,$UI){
 						handle: this.cfg.dragHandle
 					})
 				}else{
-					this.boundingBox.draggable({containment: "parent"})
+					this.boundingBox.draggable()
 				}
 			}
 		},
@@ -107,16 +120,21 @@ define(['widget','jquery','jqueryUI'], function(widget,$,$UI){
 			this._mask && this._mask.remove()
 		},
 		alert: function(cfg){
-			$.extend(this.cfg,cfg,{winType:'alert'})
-			this.render()
-			return this
+			$.extend(this.cfg,cfg,{winType:'alert'});
+			this.render();
+			return this;
 		},
 		confirm: function(cfg){
 			$.extend(this.cfg,cfg,{winType:'confirm'})
 			this.render()
 			return this
 		},
-		prompt: function(){}
+		prompt: function(cfg){
+			$.extend(this.cfg, cfg,{winType:'prompt'})
+			this.render()
+			this._promptInput.focus()
+			return this
+		}
 	})
 	return {
 		Window: Window

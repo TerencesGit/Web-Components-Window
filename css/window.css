@@ -33,6 +33,16 @@ body {
 .window-body{
     padding: 20px 
 }
+.window_promptInputWrapper{
+    text-align: center
+}
+input{
+    width: 80%;
+    height: 34px;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px
+}
 .window-footer{
     position: absolute;
     bottom: 0;
