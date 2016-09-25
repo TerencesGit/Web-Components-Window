@@ -6,10 +6,9 @@ define(['jquery'], function($){
 		on: function(type,handler){
 			if(typeof this.handlers[type] == 'undefined'){
 				this.handlers[type] = []
-			}else{
-				this.handlers[type].push(handler);
-				return this;
 			}
+			this.handlers[type].push(handler);
+			return this;
 		},
 		fire: function(type,data){
 			if(this.handlers[type] instanceof Array){

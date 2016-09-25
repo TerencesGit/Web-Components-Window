@@ -78,6 +78,7 @@ input{
     right: 0px;
     padding: 5px 10px;
     color: #fff;
+    background: #444;
     cursor: pointer;
 }
 .window_closeBtn:hover{

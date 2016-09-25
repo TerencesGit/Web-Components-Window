@@ -21,7 +21,7 @@ define(['jquery','Window'], function($,w){
 			handlerCloseBtn: function(){
 				alert('you click the close button!')
 			},
-			 skinClassName: 'blue_window',
+			//skinClassName: 'blue_window',
 			// hasMask: false,
 			dragHandle: '.window-header'
 		}).on('alert', function(){
@@ -34,7 +34,9 @@ define(['jquery','Window'], function($,w){
 	})
 	$('.btn-confirm').click(function(){
 		new w.Window().confirm({
-			content: '要确认删除这个文件吗？',
+			width: 400,
+			height: 300,
+			content: '确认要删除这个文件吗？',
 			confirmBtnText: '是',
 			cancelBtnText: '否',
 			handlerConfirmBtn: function(input){
@@ -49,7 +51,7 @@ define(['jquery','Window'], function($,w){
 	})
 	$('.btn-prompt').click(function(){
 		new w.Window().prompt({
-			width: 300,
+			width: 400,
 			height: 200,
 			promptBtnText: '提交',
 			//isPromptInputPassword: true,
@@ -59,10 +61,15 @@ define(['jquery','Window'], function($,w){
 			handlerCancelBtn: function(){
 				alert('you click the cancel button!')
 			}
-		}).on('prompt',function(inputText){
-			alert('你输入的内容是' + inputText)
-		}).on('cancel',function(){
-			alert('you click the cancel button!')
+		})
+	})
+	$('.btn-common').click(function(){
+		new w.Window().common({
+			width: 400,
+			content: '这是一个通用弹窗',
+			hasCloseBtn: true
+		}).on('close',function(){
+			alert('you click the close button')
 		})
 	})
 })

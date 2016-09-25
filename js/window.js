@@ -47,11 +47,12 @@ define(['widget','jquery','jqueryUI'], function(widget,$,$UI){
 			}
 			this.boundingBox = $(
 				'<div class="window_boundingBox">'+
-				'<div class="window-header">'+this.cfg.title+'</div>'+
-				'<div class="window-body">'+this.cfg.content+'</div>'+
-				'<div class="window-footer">'+footContent+'</div>'+
+					'<div class="window-body">'+this.cfg.content+'</div>'+
 				'</div>')
-			this._promptInput = this.boundingBox.find('.window_promptInput')
+			if(this.cfg.winType != 'common'){
+				this.boundingBox.prepend('<div class="window-header">'+this.cfg.title+'</div>')
+				this.boundingBox.append('<div class="window-footer">'+footContent+'</div>')
+			}
 			if(this.cfg.hasMask){
 				this._mask = $('<div class="window_mask"></div>');
 				this._mask.appendTo('body')
@@ -60,6 +61,7 @@ define(['widget','jquery','jqueryUI'], function(widget,$,$UI){
 				this.boundingBox.append('<span class="window_closeBtn">&times;</span>')
 			}
 			this.boundingBox.appendTo('body')
+			this._promptInput = this.boundingBox.find('.window_promptInput')
 		},
 		bindUI: function(){
 			var that = this;
@@ -112,7 +114,7 @@ define(['widget','jquery','jqueryUI'], function(widget,$,$UI){
 						handle: this.cfg.dragHandle
 					})
 				}else{
-					this.boundingBox.draggable()
+					this.boundingBox.draggable({containment: "parent"})
 				}
 			}
 		},
@@ -125,15 +127,20 @@ define(['widget','jquery','jqueryUI'], function(widget,$,$UI){
 			return this;
 		},
 		confirm: function(cfg){
-			$.extend(this.cfg,cfg,{winType:'confirm'})
-			this.render()
-			return this
+			$.extend(this.cfg,cfg,{winType:'confirm'});
+			this.render();
+			return this;
 		},
 		prompt: function(cfg){
-			$.extend(this.cfg, cfg,{winType:'prompt'})
-			this.render()
-			this._promptInput.focus()
-			return this
+			$.extend(this.cfg, cfg,{winType:'prompt'});
+			this.render();
+			this._promptInput.focus();
+			return this;
+		},
+		common: function(cfg){
+			$.extend(this.cfg,cfg,{winType:'common'});
+			this.render();
+			return this;
 		}
 	})
 	return {
